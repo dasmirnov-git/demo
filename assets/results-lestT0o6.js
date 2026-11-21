@@ -1,0 +1,1 @@
+import{n as e,t}from"./EtalonApp-DJ9p92Wu.js";document.documentElement.dataset.screen=`results`,e(t).mount(`#app`);

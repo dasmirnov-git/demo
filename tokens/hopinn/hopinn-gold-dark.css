@@ -1,0 +1,14 @@
+html[data-theme='dark'] {
+  --hopinn-gold-1: #16120c;
+  --hopinn-gold-2: #1e180f;
+  --hopinn-gold-3: #311f07;
+  --hopinn-gold-4: #412600;
+  --hopinn-gold-5: #4f2f00;
+  --hopinn-gold-6: #5f3b03;
+  --hopinn-gold-7: #744d17;
+  --hopinn-gold-8: #926222;
+  --hopinn-gold-9: #fdb927;
+  --hopinn-gold-10: #ffd200;
+  --hopinn-gold-11: #ffc600;
+  --hopinn-gold-12: #ffe6b1;
+}

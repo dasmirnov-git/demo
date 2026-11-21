@@ -1,0 +1,36 @@
+<!doctype html>
+<html
+  lang="ru"
+  data-device="desktop"
+  data-theme="light"
+  data-photos="concept"
+  data-screen="hotel"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Hopinn — скрытый отель</title>
+    <link rel="stylesheet" href="../tokens/tokens.css" />
+    <link rel="icon" href="../prototype/assets/brand/hopinn-favicon.svg?v=5" type="image/svg+xml" />
+    <script>
+      try {
+        document.documentElement.setAttribute('data-theme', 'light')
+        try { localStorage.removeItem('hopinn-proto-theme') } catch (e) {}
+        var photos = localStorage.getItem('hopinn-proto-photos')
+        if (photos === 'real' || photos === 'sketch' || photos === 'concept' || photos === 'sketch3') {
+          document.documentElement.setAttribute('data-photos', photos)
+        } else {
+          document.documentElement.setAttribute('data-photos', 'concept')
+        }
+        try { localStorage.removeItem('hopinn-proto-icons') } catch (e) {}
+      } catch (e) {}
+    </script>
+    <script type="module" crossorigin src="../assets/hotel-C3UnAg0z.js"></script>
+    <link rel="modulepreload" crossorigin href="../assets/EtalonApp-DJ9p92Wu.js">
+    <link rel="stylesheet" crossorigin href="../assets/EtalonApp-CKaZQ6mj.css">
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>

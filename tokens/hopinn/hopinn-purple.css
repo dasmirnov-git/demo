@@ -1,0 +1,14 @@
+html[data-theme='light'] {
+  --hopinn-purple-1: #fdfcfd;
+  --hopinn-purple-2: #fbf8fd;
+  --hopinn-purple-3: #f3eaf8;
+  --hopinn-purple-4: #e7daef;
+  --hopinn-purple-5: #dbcae5;
+  --hopinn-purple-6: #cfbadc;
+  --hopinn-purple-7: #c4aad2;
+  --hopinn-purple-8: #b89bc9;
+  --hopinn-purple-9: #552583;
+  --hopinn-purple-10: #3d1a5c;
+  --hopinn-purple-11: #33184e;
+  --hopinn-purple-12: #2a1540;
+}

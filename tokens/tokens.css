@@ -1,0 +1,369 @@
+/* Hopinn DS — canonical token core (Stage 1)
+ * One file for the product pages and the portal (spec 2026-10-04 § 3).
+ * Colors: vendored Radix in radix/ + Hopinn custom 12-step scales in hopinn/.
+ * Pages use semantic roles only (--bg-*, --text-*, etc.).
+ */
+
+/* --- Primitive scales (Radix Colors, vendored — status / rating) --- */
+@import url("./radix/blue.css");
+@import url("./radix/blue-dark.css");
+@import url("./radix/amber.css");
+@import url("./radix/amber-dark.css");
+@import url("./radix/grass.css");
+@import url("./radix/grass-dark.css");
+@import url("./radix/red.css");
+@import url("./radix/red-dark.css");
+@import url("./radix/black-alpha.css");
+
+/* --- Hopinn brand scales (Radix contract, etalon hex pins) --- */
+@import url("./hopinn/hopinn-purple.css");
+@import url("./hopinn/hopinn-purple-dark.css");
+@import url("./hopinn/hopinn-gold.css");
+@import url("./hopinn/hopinn-gold-dark.css");
+@import url("./hopinn/hopinn-gray.css");
+@import url("./hopinn/hopinn-gray-dark.css");
+
+/* --- Non-scale primitive ---
+ * Opaque white has no meaningful "shade" to pick — Radix ships it only as an
+ * alpha ramp (white-alpha.css, tops out at 0.95 for overlay use), not a solid
+ * opaque token, because that's not a scale decision, it's a literal. Declared
+ * once here so --text-on-accent below references a named primitive instead of
+ * a bare hex repeated per palette.
+ *
+ * This is the Radix-recommended pairing, not a workaround: Radix's own docs
+ * say to use literal white text on step 9/10 solid fills — EXCEPT for
+ * Sky/Mint/Lime/Yellow/Amber, which stay light even at step 9 and need dark
+ * text instead. Brand fills stay off that list, so --text-on-accent is --white.
+ * The highlight fill is Hopinn Gold, which stays light at step 9 — it sets
+ * --text-on-highlight to neutral-12 in semantic_map.mjs.
+ */
+:root {
+  --white: #ffffff;
+}
+
+/* --- Self-hosted fonts --- */
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+  src: url('../fonts/onest/onest-cyrillic-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url('../fonts/onest/onest-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+  src: url('../fonts/onest/onest-cyrillic-500-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url('../fonts/onest/onest-latin-500-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+  src: url('../fonts/onest/onest-cyrillic-600-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url('../fonts/onest/onest-latin-600-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+  src: url('../fonts/onest/onest-cyrillic-700-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url('../fonts/onest/onest-latin-700-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+  src: url('../fonts/onest/onest-cyrillic-800-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Onest';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url('../fonts/onest/onest-latin-800-normal.woff2') format('woff2');
+}
+
+/* --- Color scheme (element defaults live in the page CSS: portal.css, flow.css, screens.css) --- */
+html[data-theme="light"] { color-scheme: light; }
+html[data-theme="dark"] { color-scheme: dark; }
+
+/* --- Typography ramp (closed list) ---
+ * Minimum text size is 12px across product screens and the portal.
+ * T-shirt steps are the closed atom scale.
+ * Extra px steps are the reviewed etalon (do not round 15→14 — it was on purpose).
+ */
+html {
+  --font-family-body: 'Onest', system-ui, sans-serif;
+  --font-size-xs: 12px;
+  --font-size-13: 13px;
+  --font-size-sm: 14px;
+  --font-size-15: 15px;
+  --font-size-md: 16px;
+  --font-size-17: 17px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-22: 22px;
+  --font-size-2xl: 24px;
+  --font-size-28: 28px;
+  --font-size-3xl: 32px;
+  --font-size-36: 36px;
+  --font-size-4xl: 40px;
+  --font-size-48: 48px;
+  --font-size-5xl: 56px;
+
+  --line-height-xs: 16px;
+  --line-height-sm: 20px;
+  --line-height-md: 24px;
+  --line-height-lg: 28px;
+  --line-height-xl: 28px;
+  --line-height-2xl: 32px;
+  --line-height-3xl: 40px;
+  --line-height-4xl: 48px;
+  --line-height-5xl: 64px;
+
+  /* Pairs for the etalon px steps (most frequent standing pair, spec § 5.1). */
+  --line-height-2xs: 14px;
+  --line-height-13: 18px;
+  --line-height-15: 20px;
+  --line-height-17: 28px;
+  --line-height-22: 28px;
+  --line-height-28: 34px;
+  --line-height-36: 40px;
+  --line-height-48: 56px;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  --letter-spacing-tight: -0.02em;
+}
+
+/* --- Spacing --- */
+html {
+  --space-unit: 4px;
+  --space-multiplier: 1;
+  --space-1: calc(var(--space-unit) * 1 * var(--space-multiplier));
+  --space-2: calc(var(--space-unit) * 2 * var(--space-multiplier));
+  --space-3: calc(var(--space-unit) * 3 * var(--space-multiplier));
+  --space-4: calc(var(--space-unit) * 4 * var(--space-multiplier));
+  --space-5: calc(var(--space-unit) * 5 * var(--space-multiplier));
+  --space-6: calc(var(--space-unit) * 6 * var(--space-multiplier));
+  --space-7: calc(var(--space-unit) * 7 * var(--space-multiplier));
+  --space-8: calc(var(--space-unit) * 8 * var(--space-multiplier));
+  --space-9: calc(var(--space-unit) * 9 * var(--space-multiplier));
+  --space-10: calc(var(--space-unit) * 10 * var(--space-multiplier));
+  --space-12: calc(var(--space-unit) * 12 * var(--space-multiplier));
+  --space-14: calc(var(--space-unit) * 14 * var(--space-multiplier));
+  --space-16: calc(var(--space-unit) * 16 * var(--space-multiplier));
+  --space-18: calc(var(--space-unit) * 18 * var(--space-multiplier));
+}
+
+/* --- Control sizing (form atoms: button / input / select / badge) ---
+ * Shared height scale so a bare Input and a Select (and a SearchField
+ * trigger) line up pixel-for-pixel at the same size — the drift we had was
+ * hardcoded h-9 in one place and a 44px token min-height in another. S/M/L =
+ * 32/40/48 at default density (mirrors VISAM button S/M/L). Density-aware via
+ * the same --space-multiplier as spacing. Atoms consume --control-h-*; never
+ * hardcode h-8/h-9/h-10. Horizontal padding pairs via --control-px-*.
+ */
+html {
+  --control-h-sm: calc(var(--space-unit) * 8 * var(--space-multiplier));
+  --control-h-md: calc(var(--space-unit) * 10 * var(--space-multiplier));
+  --control-h-lg: calc(var(--space-unit) * 12 * var(--space-multiplier));
+  --control-px-sm: var(--space-3);
+  --control-px-md: var(--space-3);
+  --control-px-lg: var(--space-4);
+}
+
+/* --- Radius (one scale for product and portal) --- */
+html {
+  --r-3: 3px;
+  --r-xs: 4px;
+  --r-6: 6px;
+  --r-sm: 8px;
+  --r-10: 10px;
+  --r-12: 12px;
+  --r-md: 14px;
+  --r-16: 16px;
+  --r-18: 18px;
+  --r-lg: 20px;
+  --r-xl: 24px;
+  --r-2xl: 28px;
+  --r-32: 32px;
+  --r-48: 48px;
+  --r-pill: 999px;
+}
+
+/* --- Motion ---
+ * T-shirt steps are the component contract; numeric steps are the reviewed etalon values. */
+html {
+  --duration-fast: 120ms;
+  --duration-150: 150ms;
+  --duration-base: 200ms;
+  --duration-250: 250ms;
+  --duration-280: 280ms;
+  --duration-300: 300ms;
+  --duration-slow: 320ms;
+  --duration-350: 350ms;
+  --duration-600: 600ms;
+  --duration-800: 800ms;
+  --duration-loop: 3s;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+  --ease-enter: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-glide: cubic-bezier(0.33, 1, 0.32, 1);
+  --ease-wipe: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* --- Layers (z-index). Values are the standing ones; anything between stays local. --- */
+html {
+  --z-content: 1;
+  --z-sticky: 40;
+  --z-dock: 44;
+  --z-sheet: 55;
+  --z-overlay: 60;
+  --z-toast: 90;
+}
+
+/* --- Elevation (etalon --shadow family; ink-tinted, never pure black) --- */
+html {
+  --shadow-sm: 0 1px 2px color-mix(in srgb, var(--text-primary) 8%, transparent);
+  --shadow-md: 0 8px 28px color-mix(in srgb, var(--text-primary) 8%, transparent);
+  --shadow-lg: 0 12px 32px color-mix(in srgb, var(--text-primary) 6%, transparent);
+}
+
+/* --- Breakpoints (decision 8): layout switches at 720 and 1080. 390 / 1280 are check widths only.
+ * Custom properties cannot sit inside @media — these are the reference values check_drift R7 reads. */
+html {
+  --breakpoint-md: 720px;
+  --breakpoint-lg: 1080px;
+}
+
+/* --- Overlays (theme-aware) --- */
+html[data-theme="light"] {
+  --bg-overlay: var(--black-a8);
+  --mask-overlay: var(--black-a9);
+}
+
+html[data-theme="dark"] {
+  --bg-overlay: var(--black-a10);
+  --mask-overlay: var(--black-a11);
+}
+
+/* --- Status roles (palette-independent) --- */
+html {
+  --status-success: var(--grass-11);
+  --status-success-bg: var(--grass-3);
+  --status-warning: var(--amber-11);
+  --status-warning-bg: var(--amber-3);
+  --status-error: var(--red-11);
+  --status-error-bg: var(--red-3);
+  --status-info: var(--blue-11);
+  --status-info-bg: var(--blue-3);
+}
+
+/* --- Decorative product roles (not status) ---
+ * --rating-star: amber-9 (solid), not --status-warning / amber-11 (text-contrast,
+ * muddy brown in light). Gold star, not a warning label.
+ * --rating: grass-9 (solid), not --status-success / grass-11 — brighter score
+ * badge fill and word; 11 is for AA text, 9 is the same vivid green in both themes.
+ * --quote-bg: hopinn-gold-2 wash — cream, not --status-warning-bg (amber-3).
+ */
+html {
+  --rating-star: var(--hopinn-gold-9);
+  --rating: var(--grass-9);
+  --quote-bg: var(--hopinn-gold-2);
+}
+
+/* --- Palette semantic mappings --- */
+html {
+  --bg-page: var(--hopinn-gray-1);
+  --bg-surface: var(--hopinn-gray-2);
+  --bg-surface-raised: var(--hopinn-gray-3);
+  --bg-fill-muted: var(--hopinn-gray-4);
+  --text-primary: var(--hopinn-gray-12);
+  --text-secondary: var(--hopinn-gray-11);
+  --text-muted: var(--hopinn-gray-11);
+  --text-on-accent: var(--white);
+  --text-accent: var(--hopinn-purple-11);
+  --text-link: var(--hopinn-purple-11);
+  --text-highlight: var(--hopinn-gold-11);
+  --border-subtle: var(--hopinn-gray-6);
+  --border-strong: var(--hopinn-gray-8);
+  --border-accent: var(--hopinn-purple-8);
+  --border-highlight: var(--hopinn-gold-8);
+  --focus-ring: var(--hopinn-purple-8);
+  --discount: var(--hopinn-gold-9);
+  --discount-bg: var(--hopinn-gold-3);
+  --bg-tint: var(--hopinn-purple-3);
+  --bg-tint-strong: var(--hopinn-purple-4);
+  --text-subtle: var(--hopinn-gray-10);
+  --border-default: var(--hopinn-gray-7);
+}
+
+html[data-theme="light"] {
+  --bg-fill-accent: var(--hopinn-purple-9);
+  --bg-fill-accent-hover: var(--hopinn-purple-10);
+  --bg-fill-highlight: var(--hopinn-gold-9);
+  --bg-fill-highlight-hover: var(--hopinn-gold-10);
+  --text-on-highlight: var(--hopinn-gray-12);
+}
+
+html[data-theme="dark"] {
+  --bg-fill-accent: var(--hopinn-purple-8);
+  --bg-fill-accent-hover: var(--hopinn-purple-9);
+  --bg-fill-highlight: var(--hopinn-gold-9);
+  --bg-fill-highlight-hover: var(--hopinn-gold-10);
+  --text-on-highlight: var(--hopinn-gray-1);
+}
